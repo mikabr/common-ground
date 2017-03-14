@@ -1,0 +1,146 @@
+---
+title: "Common ground inferences: stimulus generation"
+author: "Mika Braginsky"
+output:
+  html_notebook:
+    code_folding: none
+    theme: cosmo
+---
+
+```{r, include=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggrepel)
+library(purrr)
+library(langcog)
+theme_set(theme_mikabr())
+```
+
+
+Load norms for valence and arousal
+```{r}
+brm <- readr::read_csv("data/BRM-emot-submit.csv") %>%
+  select(Word, V.Mean.Sum, A.Mean.Sum) %>%
+  rename(word = Word, valence = V.Mean.Sum, arousal = A.Mean.Sum)
+```
+
+Load norms for frequency and pos tags
+```{r}
+subtlex <- readxl::read_excel(
+  "data/SUBTLEX-US frequency list with PoS information.xlsx"
+) %>%
+  select(Word, Dom_PoS_SUBTLEX, Freq_dom_PoS_SUBTLEX) %>%
+  rename(word = Word, pos = Dom_PoS_SUBTLEX, count = Freq_dom_PoS_SUBTLEX)
+```
+
+Combine norms, take only adjectives and verbs
+```{r, message=FALSE}
+word_data <- brm %>%
+  left_join(subtlex) %>%
+  filter(pos %in% c("Adjective", "Verb")) %>%
+  gather(measure, value, valence, arousal)
+```
+
+Sample adjectives and verbs spanning the valence and arousal space
+```{r}
+# divides valence x arousal space into num_bins x num_bins cells
+# samples num_words_per_bin words of each pos from each cell
+word_sample <- function(df, num_bins, num_words_per_bin) {
+  df %>%
+    group_by(measure, pos) %>%
+    mutate(bin = cut(value, num_bins, labels = FALSE)) %>%
+    group_by(word, pos) %>%
+    summarise(bins = paste(bin, collapse = "_")) %>%
+    group_by(pos, bins) %>%
+    sample_n(num_words_per_bin) %>%
+    left_join(df) %>%
+    spread(measure, value)
+}
+```
+
+```{r, message=FALSE}
+ws <- word_sample(word_data, 3, 1)
+ggplot(ws, aes(x = valence, y = arousal)) +
+  facet_wrap(~pos) +
+  coord_equal() +
+  geom_point() +
+  geom_text_repel(aes(label = word))
+```
+
+Get list of _amuse_-type verbs from VerbNet, combine with valence/arousal norms
+```{r, message=FALSE}
+amuse <- xml2::read_xml("data/amuse-31.1.xml") %>%
+  xml2::xml_find_all(".//MEMBER") %>%
+  xml2::xml_attr("name")
+
+amuse_data <- data_frame(word = amuse) %>%
+  left_join(brm) %>%
+  filter(!is.na(valence)) %>%
+  gather(measure, value, valence, arousal) %>%
+  mutate(pos = "Verb")
+```
+
+Sample _amuse_-type verbs spanning the valence and arousal space
+```{r, message=FALSE}
+amuse_sample <- word_sample(amuse_data, 3, 1)
+ggplot(amuse_sample, aes(x = valence, y = arousal)) +
+  coord_equal() +
+  geom_point() +
+  geom_text_repel(aes(label = word))
+```
+
+Generate sample stimuli
+```{r}
+generate_prompt <- function(condition, verb, cause, cause_type) {
+  if (cause_type == "Adjective") {
+    specific_cause_phrase <- paste("is", cause)
+    general_cause_phrase <- paste("being", cause)
+  } else if (cause_type == "Verb") {
+    specific_cause_phrase <- paste(cause, "s", sep = "")
+    general_cause_phrase <- paste(cause, "ing", sep = "")
+  }
+  
+  if (condition == "prior") {
+    sprintf(
+      "How likely is %s to %s people?", general_cause_phrase, verb
+    )
+  } else {
+    if (condition == "positive") {
+      verb_phrase <- paste(verb, "s", sep = "")
+    } else if (condition == "negative") {
+      verb_phrase <- paste("doesn't", verb)
+    }
+    sprintf(
+      "Alice tells you: 'It %s me that Bob %s'. How likely is someone %s to %s people?", verb_phrase, specific_cause_phrase, general_cause_phrase, verb
+    )
+  }
+}
+```
+
+```{r, results='hold'}
+cat(generate_prompt("positive", "bother", "canine", "Adjective"), "\n")
+cat(generate_prompt("negative", "bother", "canine", "Adjective"), "\n")
+cat(generate_prompt("positive", "bother", "bark", "Verb"), "\n")
+cat(generate_prompt("negative", "bother", "bark", "Verb"), "\n")
+cat(generate_prompt("prior", "bother", "canine", "Adjective"), "\n")
+cat(generate_prompt("prior", "bother", "bark", "Verb"), "\n")
+```
+
+```{r}
+conditions <- c("positive", "negative", "prior")
+
+ws %>%
+  group_by(pos) %>%
+  select(pos, word) %>%
+  sample_frac(1) %>%
+  ungroup() %>%
+  mutate(verb = c(amuse_sample$word, amuse_sample$word)) %>%
+  slice(rep(1:n(), length(conditions))) %>%
+  mutate(condition = rep(conditions, each = n() / length(conditions)),
+         prompt = pmap_chr(list(condition, verb, word, pos),
+                           generate_prompt)) %$%
+  prompt %>%
+  walk(~(cat(.x, "\n")))
+```
+
