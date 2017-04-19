@@ -1,0 +1,87 @@
+---
+output: 
+  html_document: 
+    css: experiment.css
+    theme: cosmo
+params:
+  experiment_name: Sentence understanding
+  num_items: 8
+---
+
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(htmltools)
+library(tidyverse)
+```
+
+```{r helper}
+html_asis <- function(x) cat(as.character(x))
+radio <- function(name, values, inline = FALSE) {
+  if (is.null(names(values))) values <- set_names(values, values)
+  map_chr(names(values), function(value_name) {
+    span(
+      tags$input(type = "radio", value = values[[value_name]], name = name),
+      tags$label(value_name),
+      if (!inline) br()
+    ) %>%
+      as.character()
+  })
+}
+```
+
+# `r params$experiment_name`
+
+### Consent statement
+
+By answering the following questions, you are participating in a study being performed by cognitive scientists in the MIT Department of Brain and Cognitive Science. If you have questions about this research, please contact Edward Gibson at `egibson@mit.edu`. Your participation in this research is voluntary. You may decline to answer any or all of the following questions. You may decline further participation, at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you.
+
+
+### Background questions
+
+Please answer the background questions below. Payment is NOT dependent on your answers to the following background questions on country and language.
+
+```{r, results='asis'}
+html_asis(h4("What country are you from?"))
+html_asis(
+  radio(name = "country",
+        values = list("United States of America" = "USA",
+                      "Canada" = "CAN",
+                      "United Kingdom" = "UK",
+                      "Australia" = "AUS",
+                      "India" = "IND",
+                      "Other" = "OTHER"))
+)
+
+html_asis(h4("Is Engish your first language?"))
+html_asis(
+  radio(name = "english", values = c("yes", "no"))
+)
+```
+
+
+### Experiment instructions
+
+Please read each prompt and then answer the question immediately following.
+
+---
+
+```{r, results='asis'}
+answer_opts <- 1:5
+
+walk(1:params$num_items, function(i) {
+  html_asis(
+    div(br(), br(),
+        p(id = sprintf("\\${code_%s}", i), sprintf("\\${prompt_%s}", i)))
+  )
+  html_asis(span("very likely", class = "end-left"))
+  html_asis(radio(name = sprintf("\\${code_%s}", i), values = answer_opts,
+                  inline = TRUE))
+  html_asis(span("very unlikely", class = "end-right"))
+})
+```
+
+---
+
+Please leave any comments here:
+
+`r tags$textarea(name = "comments", cols="80", rows="3")`

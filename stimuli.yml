@@ -1,0 +1,33 @@
+verbs:
+  positive:
+    - delight
+    - inspire
+    - comfort
+    - amuse
+  negative:
+    - upset
+    - bother
+    - annoy
+    - worry
+
+properties:
+  positive:
+    - courageous
+    - talented
+    - smart
+    - playful
+  negative:
+    - rude
+    - greedy
+    - jealous
+    - stupid
+
+names:
+  - Jessica
+  - Jennifer
+  - Amanda
+  - Ashley
+  - Sarah
+  - Stephanie
+  - Melissa
+  - Nicole

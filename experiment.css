@@ -1,0 +1,13 @@
+label {
+  size: 200%;
+  margin-left: 3px;
+  margin-right: 10px;
+}
+
+.end-left {
+  margin-right: 30px;
+}
+
+.end-right {
+  margin-left: 20px;
+}
