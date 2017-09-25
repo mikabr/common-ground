@@ -1,0 +1,15 @@
+- 12 items per cell (pos/pos + neg/neg)
+- tweak fillers
+  - more fillers (e.g. double by flipping)
+  - fillers mixed into items
+  - add condition-appropriate prompt (TODO: negate events)
+- mixed-effects model
+- exclude based on country/language
+
+- TODO: match frequency across positive/negative
+- match association between verb and property (e.g. word2vec)?
+
+
+- two questions
+  - how likely is someone being $property to $verb people?
+  - [how likely is someone to be $property?]

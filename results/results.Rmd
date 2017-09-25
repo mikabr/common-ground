@@ -1,0 +1,360 @@
+---
+output:
+  html_notebook: 
+    highlight: tango
+    theme: spacelab
+---
+
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(forcats)
+library(lme4)
+library(langcog)
+source("../util.R")
+theme_set(theme_mikabr())
+```
+
+## Run 1
+
+- 8 verbs (4 positive, 4 negative) and 8 properties (4 positive, 4 negative) randomly paired up such that there are 2 items of each positive/negative verb/property combination
+- between subjects conditions (prior, positive, negative), each of 10 subjects in each condition sees all 8 items
+
+```{r}
+process_condition_1 <- function(condition) {
+  
+  read_csv(sprintf("run 1/results_%s.csv", condition)) %>%
+    select(HITId, starts_with("Input"), starts_with("Answer")) %>%
+    rename_(.dots = setNames(names(.),
+                             gsub("^.*\\.(.*)$", "\\1", names(.)))) %>%
+    gather(key, value, starts_with("prompt"), starts_with("code"),
+           starts_with("response")) %>%
+    separate(key, c("type", "trial"), sep = "_") %>%
+    spread(type, value) %>%
+    separate(code, c("verb_valence", "property_valence"), sep = ";") %>%
+    mutate(response = as.numeric(response),
+           trial = as.numeric(trial),
+           condition = condition,
+           property = sub(".*How likely is someone being (.*) to .* people\\?",
+                          "\\1", prompt),
+           verb = sub(".*How likely is someone being .* to (.*) people\\?",
+                      "\\1", prompt),
+           item = paste(verb, property, sep = " + "),
+           verb_valence = sub("verb_(.*)", "\\1", verb_valence),
+           property_valence = sub("property_(.*)", "\\1", property_valence))
+  
+}
+
+conditions_1 <- c("prior", "positive", "negative")
+results_1 <- map_df(conditions_1, process_condition_1)
+results_1
+```
+
+```{r}
+results_summary_1 <- results_1 %>%
+  group_by(condition, verb_valence, property_valence) %>%
+  summarise(response_mean = mean(response, na.rm = TRUE),
+            response_se = sem(response, na.rm = TRUE)) %>%
+  ungroup() %>%
+  mutate(condition = as_factor(condition))
+results_summary_1
+```
+
+```{r}
+items_1 <- results_1 %>%
+  filter(condition == "prior") %>%
+  distinct(verb_valence, property_valence, verb, property) %>%
+  group_by(verb_valence, property_valence) %>%
+  summarise(verbs = paste(verb, collapse = ", "),
+            properties = paste(property, collapse = ", "))
+```
+
+```{r, fig.height=3.5, fig.width=4}
+ggplot(results_1, aes(x = condition, y = response, colour = item)) +
+  facet_grid(verb_valence ~ property_valence, labeller = label_both) +
+  geom_jitter(width = 0.1) +
+  geom_segment(aes(y = response_mean, yend = response_mean,
+                   x = as.numeric(condition) - 0.2,
+                   xend = as.numeric(condition) + 0.2),
+               data = results_summary_1, size = 1, colour = "black") +
+  geom_rect(aes(xmin = as.numeric(condition) - 0.2,
+                xmax = as.numeric(condition) + 0.2,
+                ymin = response_mean + response_se * 1.96,
+                ymax = response_mean - response_se * 1.96),
+            colour = "grey", alpha = 0,
+            data = results_summary_1, inherit.aes = FALSE) +
+  geom_text(aes(label = properties), x = 2, y = 5.7, colour = "dark grey",
+            family = "Open Sans", data = items_1) +
+  geom_text(aes(label = verbs), x = 3.5, y = 3, colour = "dark grey",
+            angle = -90, family = "Open Sans", data = items_1) +
+  expand_limits(y = 5.7) +
+  scale_colour_solarized(name = "") +
+  theme(legend.position = "bottom")
+```
+
+## Run 2
+
+- each combination of verb and property is an item (64 total)
+- within subjects, each of 16 subjects sees 12 items, 4 from each condition
+
+```{r}
+results_2 <- read_csv("run 2/results_combined.csv") %>%
+  select(HITId, starts_with("Input"), starts_with("Answer")) %>%
+  rename_(.dots = setNames(names(.),
+                           gsub("^.*\\.(.*)$", "\\1", names(.)))) %>%
+  gather(key, value, starts_with("prompt"), starts_with("code"),
+         starts_with("response")) %>%
+  separate(key, c("type", "trial"), sep = "_") %>%
+  spread(type, value) %>%
+  mutate(response = as.numeric(response),
+         trial = as.numeric(trial),
+         property = sub(".*How likely is someone being (.*) to .* people\\?",
+                        "\\1", prompt),
+         verb = sub(".*How likely is someone being .* to (.*) people\\?",
+                    "\\1", prompt),
+         code_values = map(code, decode),
+         condition = map_chr(code_values, ~.x[["condition"]]),
+         verb_valence = map_chr(code_values, ~.x[["verb_valence"]]),
+         property_valence = map_chr(code_values,
+                                    ~.x[["property_valence"]])) %>%
+  select(-code_values)
+results_2
+```
+
+```{r}
+results_summary_2 <- results_2 %>%
+  group_by(condition, verb_valence, property_valence) %>%
+  summarise(response_mean = mean(response, na.rm = TRUE),
+            response_se = sem(response, na.rm = TRUE)) %>%
+  ungroup() %>%
+  mutate(condition = as_factor(condition))
+results_summary_2
+```
+
+```{r}
+items_2 <- results_2 %>%
+  filter(condition == "prior") %>%
+  distinct(verb_valence, property_valence, verb, property) %>%
+  group_by(verb_valence, property_valence) %>%
+  summarise(verbs = paste(sort(unique(verb)), collapse = ", "),
+            properties = paste(sort(unique(property)), collapse = ", "))
+```
+
+```{r, fig.height=3, fig.width=4}
+ggplot(results_2, aes(x = condition, y = response)) +
+  facet_grid(verb_valence ~ property_valence, labeller = label_both) +
+  geom_jitter(width = 0.1) +
+  geom_segment(aes(y = response_mean, yend = response_mean,
+                   x = as.numeric(condition) - 0.2,
+                   xend = as.numeric(condition) + 0.2),
+               data = results_summary_2, size = 1, colour = "black") +
+  geom_rect(aes(xmin = as.numeric(condition) - 0.2,
+                xmax = as.numeric(condition) + 0.2,
+                ymin = response_mean + response_se * 1.96,
+                ymax = response_mean - response_se * 1.96),
+            colour = "grey", alpha = 0,
+            data = results_summary_2, inherit.aes = FALSE) +
+  geom_text(aes(label = properties), x = 2, y = 5.7, colour = "dark grey",
+            family = "Open Sans", data = items_2) +
+  geom_text(aes(label = verbs), x = 3.5, y = 3, colour = "dark grey",
+            angle = -90, family = "Open Sans", data = items_2) +
+  expand_limits(y = 5.7)
+```
+
+## Run 3
+
+- 8 verbs (4 positive, 4 negative) and 8 properties (4 positive, 4 negative) manually paired up such that they subjectively fit well and there are 4 positive/positive items and 4 negative/negative items
+- 6 filler items (3 high likelihood, 3 low likelihood)
+- between subjects conditions (prior, positive, negative), each of 20 subjects in each condition sees all 8 items and all 6 fillers
+
+```{r}
+process_condition_3 <- function(condition) {
+  
+  read_csv(sprintf("run 3/results_%s.csv", condition)) %>%
+    select(HITId, starts_with("Input"), starts_with("Answer")) %>%
+    rename_(.dots = setNames(names(.),
+                             gsub("^.*\\.(.*)$", "\\1", names(.)))) %>%
+    gather(key, value, starts_with("prompt"), starts_with("code"),
+           starts_with("response")) %>%
+    separate(key, c("type", "trial"), sep = "_") %>%
+    spread(type, value) %>%
+    mutate(response = as.numeric(response),
+           trial = as.numeric(trial),
+           condition = condition,
+           info = map(code, decode),
+           type = map_chr(info,
+                          ~ifelse(all(names(.x) == "filler_value"), "filler",
+                                  "item")))
+}
+
+conditions_3 <- c("prior", "positive", "negative")
+results_3 <- map_df(conditions_3, process_condition_3) %>%
+  split(.$type)
+
+results_filler_3 <- results_3$filler %>%
+  mutate(filler_value = map_chr(info, ~.x[["filler_value"]]),
+         correct = (filler_value == "high" & response >= 4) |
+           (filler_value == "low" & response <= 2))
+
+filler_filter_3 <- results_filler_3 %>%
+  group_by(HITId) %>%
+  summarise(n_correct = sum(correct, na.rm = TRUE)) %>%
+  filter(n_correct >= 5)
+
+results_item_3 <- results_3$item %>%
+  filter(HITId %in% filler_filter_3$HITId) %>%
+  mutate(verb_valence = map_chr(info, ~.x[["verb_valence"]]),
+         property_valence = map_chr(info, ~.x[["property_valence"]]),
+         item = sub(".*How likely is someone being (.*) to (.*) people\\?",
+                    "\\1 \\+ \\2", prompt))
+
+results_item_3
+```
+
+```{r}
+results_summary_3 <- results_item_3 %>%
+  group_by(condition, verb_valence, property_valence) %>%
+  summarise(response_mean = mean(response, na.rm = TRUE),
+            response_se = sem(response, na.rm = TRUE)) %>%
+  ungroup() %>%
+  mutate(condition = as_factor(condition))
+results_summary_3
+```
+
+```{r}
+ggplot(results_filler_3,
+       aes(x = filler_value, y = response, colour = filler_value)) +
+  geom_jitter(width = 0.1) +
+  scale_colour_solarized()
+```
+
+
+```{r, fig.height=2.5, fig.width=4}
+ggplot(results_item_3, aes(x = condition, y = response, colour = item)) +
+  facet_wrap(~verb_valence + property_valence,
+             labeller = label_both) +
+  geom_jitter(width = 0.1) +
+  geom_segment(aes(y = response_mean, yend = response_mean,
+                   x = as.numeric(condition) - 0.2,
+                   xend = as.numeric(condition) + 0.2),
+               data = results_summary_3, size = 1, colour = "black") +
+  geom_rect(aes(xmin = as.numeric(condition) - 0.2,
+                xmax = as.numeric(condition) + 0.2,
+                ymin = response_mean + response_se * 1.96,
+                ymax = response_mean - response_se * 1.96),
+            colour = "grey", alpha = 0,
+            data = results_summary_3, inherit.aes = FALSE) +
+  expand_limits(y = 5.7) +
+  scale_colour_solarized(name = "") +
+  theme(legend.position = "bottom")
+```
+
+
+## Run 4
+
+- 24 verbs (12 positive, 12 negative) and 24 properties (12 positive, 12 negative) manually paired up such that they subjectively fit well and there are 12 positive/positive items and 12 negative/negative items
+- 6 filler items, each with a high likelihood match and a low likelihood match (12 fillers total)
+- between subjects conditions (prior, positive, negative), each of 30 subjects in each condition sees all 24 items and all 12 fillers
+- participants only included if country is USA, native language is English, and number of fillers correct (rated 4 or 5 for high likelihood, rated 1 or 2 for low likelihood) is at least 10
+
+```{r}
+process_condition_4 <- function(condition) {
+  
+  read_csv(sprintf("run4/results_%s.csv", condition)) %>%
+    select(HITId, starts_with("Input"), starts_with("Answer")) %>%
+    rename_(.dots = setNames(names(.),
+                             gsub("^.*\\.(.*)$", "\\1", names(.)))) %>%
+    gather(key, value, starts_with("prompt"), starts_with("code"),
+           starts_with("response")) %>%
+    separate(key, c("type", "trial"), sep = "_") %>%
+    spread(type, value) %>%
+    mutate(response = as.numeric(response),
+           trial = as.numeric(trial),
+           condition = condition,
+           info = map(code, decode),
+           type = map_chr(info,
+                          ~ifelse(all(names(.x) == "filler_value"), "filler",
+                                  "item")))
+}
+
+conditions_4 <- c("prior", "positive", "negative")
+results_4 <- map_df(conditions_4, process_condition_4) %>%
+  split(.$type)
+
+results_filler_4 <- results_4$filler %>%
+  mutate(filler_value = map_chr(info, ~.x[["filler_value"]]),
+         correct = (filler_value == "high" & response >= 4) |
+           (filler_value == "low" & response <= 2))
+
+filler_filter_4 <- results_filler_4 %>%
+  group_by(HITId, country, english) %>%
+  summarise(n_correct = sum(correct, na.rm = TRUE)) %>%
+  filter(n_correct >= 10, country == "USA", english == "yes")
+
+results_item_4 <- results_4$item %>%
+  filter(HITId %in% filler_filter_4$HITId) %>%
+  mutate(verb_valence = map_chr(info, ~.x[["verb_valence"]]),
+         property_valence = map_chr(info, ~.x[["property_valence"]]),
+         item = sub(".*How likely is someone being (.*) to (.*) people\\?",
+                    "\\1 \\+ \\2", prompt))
+
+results_item_4
+```
+
+```{r}
+results_summary_4 <- results_item_4 %>%
+  group_by(condition, verb_valence, property_valence) %>%
+  summarise(response_mean = mean(response, na.rm = TRUE),
+            response_se = sem(response, na.rm = TRUE)) %>%
+  ungroup() %>%
+  mutate(condition = as_factor(condition))
+results_summary_4
+```
+
+```{r}
+ggplot(results_filler_4,
+       aes(x = filler_value, y = response, colour = filler_value,
+           alpha = correct)) +
+  geom_jitter(width = 0.1) +
+  scale_colour_solarized()
+```
+
+
+```{r, fig.height=2.5, fig.width=4}
+ggplot(results_item_4, aes(x = condition, y = response, colour = item)) +
+  facet_wrap(~verb_valence + property_valence,
+             labeller = label_both) +
+  geom_jitter(width = 0.1) +
+  geom_segment(aes(y = response_mean, yend = response_mean,
+                   x = as.numeric(condition) - 0.2,
+                   xend = as.numeric(condition) + 0.2),
+               data = results_summary_4, size = 1, colour = "black") +
+  geom_rect(aes(xmin = as.numeric(condition) - 0.2,
+                xmax = as.numeric(condition) + 0.2,
+                ymin = response_mean + response_se * 1.96,
+                ymax = response_mean - response_se * 1.96),
+            colour = "grey", alpha = 0,
+            data = results_summary_4, inherit.aes = FALSE) +
+  expand_limits(y = 5.7) +
+  scale_colour_solarized(name = "") +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+results_item_4 %>%
+  split(.$verb_valence) %>%
+  map(~lm(response ~ condition, data = .x)) %>%
+  map(summary)
+```
+
+```{r}
+results_item_4 %>%
+  mutate(condition = fct_relevel(condition,
+                                 c("prior", "positive", "negative")),
+         scaled_response = scale(response)) %>%
+  split(.$verb_valence) %>%
+  map(~lmer(scaled_response ~ condition + (condition | HITId) + (condition | item),
+            data = .x)) %>%
+  map(summary)
+```
+

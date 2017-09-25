@@ -5,7 +5,7 @@ output:
     theme: cosmo
 params:
   experiment_name: Sentence understanding
-  num_items: 8
+  num_items: 36
 ---
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
@@ -71,12 +71,12 @@ answer_opts <- 1:5
 walk(1:params$num_items, function(i) {
   html_asis(
     div(br(), br(),
-        p(id = sprintf("\\${code_%s}", i), sprintf("\\${prompt_%s}", i)))
+        p(id = sprintf("${code_%s}", i), sprintf("\\${prompt_%s}", i)))
   )
-  html_asis(span("very likely", class = "end-left"))
-  html_asis(radio(name = sprintf("\\${code_%s}", i), values = answer_opts,
+  html_asis(span("very unlikely", class = "end-left"))
+  html_asis(radio(name = sprintf("response_%s", i), values = answer_opts,
                   inline = TRUE))
-  html_asis(span("very unlikely", class = "end-right"))
+  html_asis(span("very likely", class = "end-right"))
 })
 ```
 
@@ -84,4 +84,6 @@ walk(1:params$num_items, function(i) {
 
 Please leave any comments here:
 
-`r tags$textarea(name = "comments", cols="80", rows="3")`
+```{r}
+tags$textarea(name = "comments", cols = "80", rows = "3")
+```

@@ -11,3 +11,7 @@ label {
 .end-right {
   margin-left: 20px;
 }
+
+textarea {
+  margin-bottom: 20px;
+}

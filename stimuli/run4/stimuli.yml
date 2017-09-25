@@ -1,0 +1,104 @@
+verbs:
+  positive:
+    - comfort
+    - delight
+    - inspire
+    - amuse
+    - charm
+    - amaze
+    - encourage
+    - fascinate
+    - excite
+    - entertain
+    - impress
+    - relieve
+  negative:
+    - upset
+    - bother
+    - anger
+    - annoy
+    - worry
+    - hurt
+    - depress
+    - aggravate
+    - displease
+    - disappoint
+    - discourage
+    - irritate
+
+properties:
+  positive:
+    - courageous
+    - enthusiastic
+    - talented
+    - playful
+    - cheerful
+    - smart
+    - faithful
+    - knowledgeable
+    - energetic
+    - funny
+    - confident
+    - honest
+  negative:
+    - vengeful
+    - rude
+    - creepy
+    - stupid
+    - jealous
+    - violent
+    - unfriendly
+    - conceited
+    - greedy
+    - inconsiderate
+    - hateful
+    - incompetent
+
+
+fillers:
+  - event: won the lottery
+    trigger: winning the lottery
+    high: happy
+    low: sad
+  - event: had a parent die
+    trigger: having a parent die
+    high: sad
+    low: happy
+  - event: went on vacation
+    trigger: going on vacation
+    high: relaxed
+    low: stressed
+  - event: lost my job
+    trigger: losing their job
+    high: stressed
+    low: relaxed
+  - event: crashed my car
+    trigger: crashing their car
+    high: upset
+    low: pleased
+  - event: had a birthday party
+    trigger: having a birthday party
+    high: pleased
+    low: upset
+
+names:
+  - Amanda
+  - Amy
+  - Ashley
+  - Christine
+  - Jennifer
+  - Jessica
+  - Julie
+  - Karen
+  - Kimberly
+  - Laura
+  - Lisa
+  - Mary
+  - Melissa
+  - Michelle
+  - Nicole
+  - Sarah
+  - Stephanie
+  - Susan
+  - Tina
+  - Tracy

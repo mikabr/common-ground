@@ -20,7 +20,7 @@ theme_set(theme_mikabr())
 
 Load norms for valence and arousal
 ```{r}
-brm <- readr::read_csv("data/BRM-emot-submit.csv") %>%
+brm <- readr::read_csv("resources/BRM-emot-submit.csv") %>%
   select(Word, V.Mean.Sum, A.Mean.Sum) %>%
   rename(word = Word, valence = V.Mean.Sum, arousal = A.Mean.Sum)
 ```
@@ -28,7 +28,7 @@ brm <- readr::read_csv("data/BRM-emot-submit.csv") %>%
 Load norms for frequency and pos tags
 ```{r}
 subtlex <- readxl::read_excel(
-  "data/SUBTLEX-US frequency list with PoS information.xlsx"
+  "resources/SUBTLEX-US frequency list with PoS information.xlsx"
 ) %>%
   select(Word, Dom_PoS_SUBTLEX, Freq_dom_PoS_SUBTLEX) %>%
   rename(word = Word, pos = Dom_PoS_SUBTLEX, count = Freq_dom_PoS_SUBTLEX)
@@ -70,15 +70,17 @@ ggplot(ws, aes(x = valence, y = arousal)) +
 
 Get list of _amuse_-type verbs from VerbNet, combine with valence/arousal norms
 ```{r, message=FALSE}
-amuse <- xml2::read_xml("data/amuse-31.1.xml") %>%
+amuse <- xml2::read_xml("resources/amuse-31.1.xml") %>%
   xml2::xml_find_all(".//MEMBER") %>%
   xml2::xml_attr("name")
 
 amuse_data <- data_frame(word = amuse) %>%
-  left_join(brm) %>%
-  filter(!is.na(valence)) %>%
-  gather(measure, value, valence, arousal) %>%
-  mutate(pos = "Verb")
+  left_join(word_data) %>%
+  #left_join(brm) %>%
+  #spread(measure, value) %>%
+  filter(!is.na(measure)) #%>%
+  #gather(measure, value, valence, arousal) %>%
+  #mutate(pos = "Verb")
 ```
 
 Sample _amuse_-type verbs spanning the valence and arousal space

@@ -1,0 +1,91 @@
+"code_1","code_2","code_3","code_4","code_5","code_6","code_7","code_8","prompt_1","prompt_2","prompt_3","prompt_4","prompt_5","prompt_6","prompt_7","prompt_8","list"
+"verb_positive;property_negative","verb_negative;property_positive","verb_negative;property_negative","verb_negative;property_positive","verb_positive;property_positive","verb_negative;property_negative","verb_positive;property_negative","verb_positive;property_positive","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?",1
+"verb_positive;property_positive","verb_negative;property_negative","verb_negative;property_positive","verb_negative;property_positive","verb_positive;property_negative","verb_positive;property_negative","verb_negative;property_negative","verb_positive;property_positive","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?",2
+"verb_negative;property_negative","verb_negative;property_negative","verb_negative;property_positive","verb_negative;property_positive","verb_positive;property_negative","verb_positive;property_positive","verb_positive;property_negative","verb_positive;property_positive","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?",3
+"verb_positive;property_negative","verb_negative;property_positive","verb_positive;property_positive","verb_negative;property_positive","verb_positive;property_negative","verb_negative;property_negative","verb_positive;property_positive","verb_negative;property_negative","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?",4
+"verb_positive;property_negative","verb_negative;property_positive","verb_negative;property_negative","verb_negative;property_negative","verb_positive;property_positive","verb_positive;property_positive","verb_negative;property_positive","verb_positive;property_negative","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?",5
+"verb_negative;property_negative","verb_positive;property_negative","verb_positive;property_positive","verb_negative;property_negative","verb_positive;property_negative","verb_negative;property_positive","verb_negative;property_positive","verb_positive;property_positive","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?",6
+"verb_positive;property_positive","verb_positive;property_negative","verb_positive;property_negative","verb_negative;property_negative","verb_negative;property_negative","verb_positive;property_positive","verb_negative;property_positive","verb_negative;property_positive","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?",7
+"verb_negative;property_positive","verb_positive;property_negative","verb_positive;property_negative","verb_positive;property_positive","verb_positive;property_positive","verb_negative;property_positive","verb_negative;property_negative","verb_negative;property_negative","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?",8
+"verb_positive;property_positive","verb_negative;property_negative","verb_negative;property_negative","verb_positive;property_negative","verb_positive;property_positive","verb_positive;property_negative","verb_negative;property_positive","verb_negative;property_positive","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?",9
+"verb_positive;property_negative","verb_positive;property_negative","verb_negative;property_positive","verb_positive;property_positive","verb_negative;property_positive","verb_negative;property_negative","verb_negative;property_negative","verb_positive;property_positive","Jessica tells you: ""It doesn't comfort me that Nicole is stupid"". 
+ How likely is someone being stupid to comfort people?","Jessica tells you: ""It doesn't amuse me that Nicole is greedy"". 
+ How likely is someone being greedy to amuse people?","Sarah tells you: ""It doesn't bother me that Melissa is courageous"". 
+ How likely is someone being courageous to bother people?","Jessica tells you: ""It doesn't delight me that Sarah is talented"". 
+ How likely is someone being talented to delight people?","Jennifer tells you: ""It doesn't upset me that Stephanie is smart"". 
+ How likely is someone being smart to upset people?","Jessica tells you: ""It doesn't worry me that Sarah is rude"". 
+ How likely is someone being rude to worry people?","Amanda tells you: ""It doesn't annoy me that Stephanie is jealous"". 
+ How likely is someone being jealous to annoy people?","Stephanie tells you: ""It doesn't inspire me that Jennifer is playful"". 
+ How likely is someone being playful to inspire people?",10

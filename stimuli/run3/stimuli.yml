@@ -1,14 +1,14 @@
 verbs:
   positive:
+    - comfort
     - delight
     - inspire
-    - comfort
     - amuse
   negative:
     - upset
     - bother
+    - anger
     - annoy
-    - worry
 
 properties:
   positive:
@@ -21,6 +21,16 @@ properties:
     - greedy
     - jealous
     - stupid
+
+fillers:
+  high:
+    - winning the lottery to make them happy
+    - having their dog die to make them sad
+    - going on vacation to make them relaxed
+  low:
+    - taking a nap to make them excited
+    - crashing their car to make them pleased
+    - drinking water to make them scared
 
 names:
   - Jessica
